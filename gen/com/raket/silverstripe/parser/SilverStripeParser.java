@@ -22,43 +22,45 @@ public class SilverStripeParser implements PsiParser {
     int level_ = 0;
     boolean result_;
     builder_ = adapt_builder_(root_, builder_, this);
-    if (root_ == OUTER_WRAPPER) {
-      result_ = outer_wrapper(builder_, level_ + 1);
-    }
-    else if (root_ == SS_BAD_BLOCK_STATEMENT) {
-      result_ = ss_bad_block_statement(builder_, level_ + 1);
-    }
-    else if (root_ == SS_BLOCK_CONTINUE_STATEMENT) {
-      result_ = ss_block_continue_statement(builder_, level_ + 1);
-    }
-    else if (root_ == SS_BLOCK_END_STATEMENT) {
-      result_ = ss_block_end_statement(builder_, level_ + 1);
-    }
-    else if (root_ == SS_BLOCK_SIMPLE_STATEMENT) {
-      result_ = ss_block_simple_statement(builder_, level_ + 1);
-    }
-    else if (root_ == SS_BLOCK_START_STATEMENT) {
-      result_ = ss_block_start_statement(builder_, level_ + 1);
-    }
-    else if (root_ == SS_BLOCK_STATEMENT) {
-      result_ = ss_block_statement(builder_, level_ + 1);
-    }
-    else if (root_ == SS_COMMENT_STATEMENT) {
-      result_ = ss_comment_statement(builder_, level_ + 1);
-    }
-    else if (root_ == SS_FRAGMENT) {
-      result_ = ss_fragment(builder_, level_ + 1);
-    }
-    else if (root_ == SS_VAR_STATEMENT) {
-      result_ = ss_var_statement(builder_, level_ + 1);
-    }
-    else {
-      Marker marker_ = builder_.mark();
-      result_ = parse_root_(root_, builder_, level_);
-      while (builder_.getTokenType() != null) {
-        builder_.advanceLexer();
-      }
-      marker_.done(root_);
+    switch (root_) {
+        case OUTER_WRAPPER:
+            result_ = outer_wrapper(builder_, level_ + 1);
+            break;
+        case SS_BAD_BLOCK_STATEMENT:
+            result_ = ss_bad_block_statement(builder_, level_ + 1);
+            break;
+        case SS_BLOCK_CONTINUE_STATEMENT:
+            result_ = ss_block_continue_statement(builder_, level_ + 1);
+            break;
+        case SS_BLOCK_END_STATEMENT:
+            result_ = ss_block_end_statement(builder_, level_ + 1);
+            break;
+        case SS_BLOCK_SIMPLE_STATEMENT:
+            result_ = ss_block_simple_statement(builder_, level_ + 1);
+            break;
+        case SS_BLOCK_START_STATEMENT:
+            result_ = ss_block_start_statement(builder_, level_ + 1);
+            break;
+        case SS_BLOCK_STATEMENT:
+            result_ = ss_block_statement(builder_, level_ + 1);
+            break;
+        case SS_COMMENT_STATEMENT:
+            result_ = ss_comment_statement(builder_, level_ + 1);
+            break;
+        case SS_FRAGMENT:
+            result_ = ss_fragment(builder_, level_ + 1);
+            break;
+        case SS_VAR_STATEMENT:
+            result_ = ss_var_statement(builder_, level_ + 1);
+            break;
+        default:
+            Marker marker_ = builder_.mark();
+            result_ = parse_root_(root_, builder_, level_);
+            while (builder_.getTokenType() != null) {
+            builder_.advanceLexer();
+            }
+            marker_.done(root_);
+            break;
     }
     return builder_.getTreeBuilt();
   }
